@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>Haja</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #5c4bff, #2b0c4f);
+    }
+
+    .phone {
+      background: linear-gradient(to bottom, #f7f7ff, #fdfdff);
+      width: 100%;
+      max-width: 430px;
+      border-radius: 28px;
+      padding: 18px 14px 20px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      min-height: 90vh;
+      overflow-y: auto;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 0 0 4px;
+      text-align: center;
+      color: #4b2c82;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      text-align: center;
+      color: #7a7a9a;
+      margin-bottom: 12px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 16px 14px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+      margin-bottom: 12px;
+    }
+
+    .center { text-align: center; }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      border: none;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn.big {
+      background: linear-gradient(to right, #4b3bff, #b300ff);
+      color: white;
+    }
+
+    .btn.big.alt {
+      background: linear-gradient(to right, #ff44bb, #ff0099);
+      color: white;
+    }
+
+    .btn.small {
+      background: white;
+      color: #333;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    .btn.small.danger {
+      background: #ffecec;
+      border-color: #f5a3a3;
+      color: #c62828;
+    }
+
+    .btn.small.positive {
+      background: #e3ffe7;
+      border-color: #9ae2a8;
+      color: #207544;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #6b6b85;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      font-family: inherit;
+    }
+
+    .field {
+      padding:10px;
+      width:100%;
+      border-radius:12px;
+      border:1px solid #ccc;
+      margin-bottom:8px;
+      font-size: 13px;
+    }
+
+    .small-text {
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Child list styling */
+    .child-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .child-row:last-child {
+      border-bottom: none;
+    }
+
+    .child-main {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .child-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .child-code {
+      font-size: 11px;
+      color: #777;
+    }
+
+    .child-right {
+      text-align: right;
+    }
+
+    .child-balance {
+      font-size: 14px;
+      font-weight: 600;
+      color: #267a41;
+    }
+
+    .badge-pending {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 10px;
+      border-radius: 999px;
+      background: #ffe9c2;
+      color: #8b4a00;
+    }
+
+    /* Tasks, parent view */
+    .tasks-tabs {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      margin-bottom: 6px;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 6px 4px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid #ddd;
+      color: #777;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: #f4e9ff;
+      border-color: #caa6ff;
+      color: #6a2fbf;
+      font-weight: 600;
+    }
+
+    .task-row {
+      background: #fffef8;
+      border-radius: 14px;
+      padding: 10px;
+      margin-bottom: 8px;
+      border: 1px solid #ffe2b3;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+
+    .task-top-row {
+      display:flex;
+      gap:8px;
+    }
+
+    .task-thumb {
+      width:70px;
+      height:70px;
+      border-radius:12px;
+      background:#eee;
+      flex-shrink:0;
+      object-fit:cover;
+    }
+
+    .task-main {
+      flex:1;
+    }
+
+    .task-headline {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin-bottom:2px;
+    }
+
+    .task-title {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .task-child {
+      font-size: 11px;
+      color: #777;
+      margin-bottom: 2px;
+    }
+
+    .task-earn {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1f8b4d;
+      margin-bottom: 4px;
+    }
+
+    .task-desc {
+      font-size:11px;
+      color:#555;
+      margin-bottom:4px;
+    }
+
+    .task-status-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 10px;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      margin-bottom: 4px;
+    }
+
+    .status-open {
+      background: #f5f5ff;
+      border-color: #d5d5ff;
+      color: #4b3bff;
+    }
+
+    .status-pending {
+      background: #fff8dc;
+      border-color: #ffda82;
+      color: #8b6b00;
+    }
+
+    .status-approved {
+      background: #e6ffed;
+      border-color: #8fd6a4;
+      color: #207544;
+    }
+
+    .task-btn {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #34a853;
+      color: white;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .task-btn.secondary {
+      background: #f1f1f1;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .task-btn.heart {
+      background: linear-gradient(to right, #ff6cab, #ff9a44);
+    }
+
+    .delete-btn {
+      background: transparent;
+      border: none;
+      color: #c62828;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    /* Child view cards */
+    .child-header-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:8px;
+    }
+
+    .child-header-row span {
+      font-size:13px;
+      font-weight:600;
+      color:#4b2c82;
+    }
+
+    .child-summary-card {
+      border-radius:16px;
+      padding:14px 14px 10px;
+      background: linear-gradient(135deg,#f547ff,#5c4bff);
+      color:white;
+      box-shadow:0 4px 14px rgba(0,0,0,0.18);
+      margin-bottom:14px;
+    }
+
+    .child-summary-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:4px;
+    }
+
+    .child-summary-label {
+      font-size:11px;
+      opacity:0.9;
+    }
+
+    .child-summary-value {
+      font-size:16px;
+      font-weight:600;
+    }
+
+    .child-summary-divider {
+      height:1px;
+      background:rgba(255,255,255,0.4);
+      margin:8px 0;
+    }
+
+    .child-task-card {
+      background:white;
+      border-radius:16px;
+      padding:10px;
+      margin-bottom:10px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+      border:1px solid #f1f1ff;
+    }
+
+    .child-task-image {
+      width:100%;
+      max-height:180px;
+      border-radius:14px;
+      object-fit:cover;
+      margin-bottom:6px;
+    }
+
+    .child-task-title {
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:2px;
+    }
+
+    .child-task-earn {
+      font-size:12px;
+      font-weight:600;
+      color:#1f8b4d;
+      margin-bottom:6px;
+    }
+
+    .child-task-desc {
+      font-size:11px;
+      color:#555;
+      margin-bottom:6px;
+    }
+
+    .label-pill {
+      display:inline-block;
+      padding:3px 8px;
+      font-size:10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.2);
+      margin-left:4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="phone">
+
+    <h1>Haja</h1>
+    <div class="subtitle">Let’s Do It! Parent-Child Task Reward System </div>
+
+    <!-- START -->
+    <div id="start-screen" class="card center">
+      <p style="margin-bottom:12px;">Who are you ?</p>
+      <button id="btn-parent" class="btn big">I am a Parent</button>
+      <button id="btn-child" class="btn big alt">I am a Child</button>
+    </div>
+
+    <!-- PARENT PIN -->
+    <div id="parent-pin-screen" class="card center" style="display:none;">
+      <h2 style="margin:0 0 8px; font-size:18px;">Parent PIN</h2>
+      <p id="parent-pin-label" class="small-text" style="margin-bottom:10px;">
+        Enter your parent PIN to continue.
+      </p>
+      <input type="password" id="parent-pin-input" class="field" placeholder="4 or 6 digits">
+      <button id="parent-pin-submit" class="btn small">Login</button>
+      <p id="parent-pin-error" class="small-text" style="color:#c62828; display:none; margin-top:8px;">
+        Something went wrong. Check your PIN.
+      </p>
+      <button id="parent-pin-back" class="btn small">Back</button>
+    </div>
+
+    <!-- PARENT VIEW -->
+    <div id="parent-screen" class="card" style="display:none;">
+      <h2 style="margin:0 0 8px; font-size:18px;">My Family</h2>
+
+      <div class="section-title">Children</div>
+      <div id="children-list" style="margin-bottom:14px;"></div>
+
+      <div class="section-title">Add child</div>
+      <input type="text" id="child-name-input" class="field" placeholder="Child name">
+      <button id="add-child-btn" class="btn small positive">Add child</button>
+
+      <hr style="margin:16px 0; border:none; border-top:1px solid #eee;">
+
+      <div id="add-task-section">
+        <div class="section-title" id="add-task-title">Add task</div>
+        <select id="task-child-select" class="field">
+          <option value="">Choose child</option>
+        </select>
+
+        <input type="text" id="task-title-input" class="field" placeholder="Task title">
+
+        <textarea id="task-desc-input" class="field" rows="2"
+                  placeholder="More details (optional)"></textarea>
+
+        <input type="number" id="task-reward-input" class="field"
+               placeholder="Reward amount, for example 1.50"
+               min="0" step="0.1">
+
+        <input type="url" id="task-image-url" class="field"
+               placeholder="Image link (optional)">
+
+        <label class="small-text" for="task-image-file">Or upload image (optional)</label>
+        <input type="file" id="task-image-file" class="field"
+               accept="image/*" style="padding:6px;">
+
+        <button id="add-task-btn" class="btn small">Add task</button>
+        <button id="cancel-edit-btn" class="btn small danger" style="display:none;">Cancel editing</button>
+      </div>
+
+      <hr style="margin:16px 0; border:none; border-top:1px solid #eee;">
+
+      <div class="section-title">All tasks overview</div>
+      <div class="tasks-tabs">
+        <div id="tab-current" class="tab active">Open</div>
+        <div id="tab-pending" class="tab">Pending approval</div>
+      </div>
+      <div id="tasks-list"></div>
+
+      <button id="change-pin-btn" class="btn small" style="margin-top:14px;">Change parent PIN</button>
+      <button id="back-parent" class="btn small">Back</button>
+    </div>
+
+    <!-- CHILD VIEW -->
+    <div id="child-screen" class="card" style="display:none;">
+      <div id="child-login-section">
+        <h2 style="margin:0 0 8px; font-size:18px;">Child login</h2>
+
+        <div class="section-title">Your name</div>
+        <input type="text" id="child-login-name" class="field" placeholder="Enter your name">
+
+        <div class="section-title">Access code (6 digits)</div>
+        <input type="text" id="child-login-code" class="field" placeholder="Enter your code">
+
+        <button id="child-login-btn" class="btn small">Login</button>
+        <p id="child-login-error" class="small-text" style="color:#c62828; display:none; margin-top:8px;">
+          Name or code is not correct.
+        </p>
+      </div>
+
+      <div id="child-main-section" style="display:none; margin-top:8px;">
+        <div class="child-header-row">
+          <span id="child-hello">Hi!</span>
+          <span>Child interface<span class="label-pill">Let’s Do It!</span></span>
+        </div>
+
+        <div class="child-summary-card">
+          <div class="child-summary-row">
+            <div class="child-summary-label">You have earned</div>
+            <div class="child-summary-value" id="child-earned">$0.00</div>
+          </div>
+          <div class="child-summary-divider"></div>
+          <div class="child-summary-row">
+            <div class="child-summary-label">Waiting for parent</div>
+            <div class="child-summary-value" id="child-pending-amount">$0.00</div>
+          </div>
+        </div>
+
+        <div class="section-title">Your tasks for today</div>
+        <div id="child-open-list"></div>
+
+        <div class="section-title" style="margin-top:10px;">Waiting for approval</div>
+        <div id="child-pending-list"></div>
+
+        <button id="child-logout-btn" class="btn small">Log out</button>
+      </div>
+
+      <button id="back-child" class="btn small">Back</button>
+    </div>
+
+  </div>
+
+  <script>
+    // Parent PIN stored in localStorage
+    const PARENT_PIN_KEY = "haja_parent_pin";
+    let parentPin = localStorage.getItem(PARENT_PIN_KEY) || null;
+    let creatingPin = false;
+
+    const startScreen = document.getElementById("start-screen");
+    const parentPinScreen = document.getElementById("parent-pin-screen");
+    const parentScreen = document.getElementById("parent-screen");
+    const childScreen = document.getElementById("child-screen");
+
+    let children = JSON.parse(localStorage.getItem("haja_children") || "[]");
+    let tasks = JSON.parse(localStorage.getItem("haja_tasks") || "[]");
+    let activeChildId = null;
+    let activeTab = "current";
+    let editTaskId = null;
+
+    function saveChildren() {
+      localStorage.setItem("haja_children", JSON.stringify(children));
+    }
+
+    function saveTasks() {
+      localStorage.setItem("haja_tasks", JSON.stringify(tasks));
+    }
+
+    function setParentPin(pin) {
+      parentPin = pin;
+      localStorage.setItem(PARENT_PIN_KEY, pin);
+    }
+
+    function generateCode() {
+      return Math.floor(100000 + Math.random() * 900000);
+    }
+
+    function getChildById(id) {
+      return children.find(c => c.id === id);
+    }
+
+    function updateChildStats() {
+      children.forEach(child => {
+        const childTasks = tasks.filter(t => t.childId === child.id);
+        const balance = childTasks
+          .filter(t => t.status === "approved")
+          .reduce((sum, t) => sum + t.reward, 0);
+        const pending = childTasks.filter(t => t.status === "pending").length;
+
+        child.balance = balance;
+        child.pending = pending;
+      });
+      saveChildren();
+    }
+
+    function renderChildren() {
+      updateChildStats();
+
+      const container = document.getElementById("children-list");
+      container.innerHTML = "";
+
+      if (children.length === 0) {
+        container.innerHTML = "<p style='color:#777;'>No children yet.</p>";
+        return;
+      }
+
+      children.forEach(child => {
+        const div = document.createElement("div");
+        div.className = "child-row";
+
+        div.innerHTML = `
+          <div class="child-main">
+            <div class="child-name">${child.name}</div>
+            <div class="child-code">Code: ${child.code}</div>
+          </div>
+          <div class="child-right">
+            <div class="child-balance">$${child.balance.toFixed(2)}</div>
+            <span class="badge-pending">${child.pending} pending</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      const taskChildSelect = document.getElementById("task-child-select");
+      taskChildSelect.innerHTML = '<option value="">Choose child</option>';
+      children.forEach(child => {
+        const opt = document.createElement("option");
+        opt.value = String(child.id);
+        opt.textContent = child.name;
+        taskChildSelect.appendChild(opt);
+      });
+    }
+
+    function renderTasks(filter) {
+      const container = document.getElementById("tasks-list");
+      container.innerHTML = "";
+
+      let filtered = tasks;
+      if (filter === "current") {
+        filtered = tasks.filter(t => t.status === "open");
+      } else if (filter === "pending") {
+        filtered = tasks.filter(t => t.status === "pending");
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = "<p style='color:#777;'>No tasks.</p>";
+        return;
+      }
+
+      filtered.slice().reverse().forEach(task => {
+        const child = getChildById(task.childId);
+        const childName = child ? child.name : "Unknown";
+
+        const div = document.createElement("div");
+        div.className = "task-row";
+
+        let statusClass = "status-open";
+        let statusText = "Open";
+        if (task.status === "pending") {
+          statusClass = "status-pending";
+          statusText = "Waiting for approval";
+        } else if (task.status === "approved") {
+          statusClass = "status-approved";
+          statusText = "Approved";
+        }
+
+        let imageHtml = "";
+        if (task.image && task.image.trim() !== "") {
+          const safeSrc = task.image.replace(/"/g, "&quot;");
+          imageHtml = `<img src="${safeSrc}" alt="Task image" class="task-thumb">`;
+        } else {
+          imageHtml = `<div class="task-thumb"></div>`;
+        }
+
+        const descHtml = task.desc && task.desc.trim() !== ""
+          ? `<div class="task-desc">${task.desc}</div>`
+          : "";
+
+        div.innerHTML = `
+          <div class="task-top-row">
+            ${imageHtml}
+            <div class="task-main">
+              <div class="task-headline">
+                <div class="task-title">${task.title}</div>
+                <button class="delete-btn" title="Delete task">✖</button>
+              </div>
+              <div class="task-child">${childName}</div>
+              <div class="task-earn">+ $${task.reward.toFixed(2)}</div>
+              ${descHtml}
+              <div class="task-status-pill ${statusClass}">${statusText}</div>
+            </div>
+          </div>
+        `;
+
+        const buttonsWrapper = document.createElement("div");
+
+        if (task.status === "open") {
+          const btnEdit = document.createElement("button");
+          btnEdit.textContent = "Edit task";
+          btnEdit.className = "task-btn secondary";
+          btnEdit.onclick = () => {
+            enterEditMode(task);
+            document.getElementById("add-task-section").scrollIntoView({ behavior: "smooth" });
+          };
+          buttonsWrapper.appendChild(btnEdit);
+        }
+
+        if (task.status === "pending") {
+          const btnApprove = document.createElement("button");
+          btnApprove.textContent = "Verify and add to balance";
+          btnApprove.className = "task-btn heart";
+          btnApprove.onclick = () => {
+            task.status = "approved";
+            saveTasks();
+            renderAll();
+          };
+          buttonsWrapper.appendChild(btnApprove);
+
+          const btnReset = document.createElement("button");
+          btnReset.textContent = "Reset to open";
+          btnReset.className = "task-btn secondary";
+          btnReset.onclick = () => {
+            task.status = "open";
+            saveTasks();
+            renderAll();
+          };
+          buttonsWrapper.appendChild(btnReset);
+        }
+
+        div.appendChild(buttonsWrapper);
+
+        const deleteBtn = div.querySelector(".delete-btn");
+        deleteBtn.onclick = () => {
+          tasks = tasks.filter(t => t.id !== task.id);
+          saveTasks();
+          renderAll();
+        };
+
+        container.appendChild(div);
+      });
+    }
+
+    function renderChildView() {
+      const loginSection = document.getElementById("child-login-section");
+      const mainSection = document.getElementById("child-main-section");
+      const hello = document.getElementById("child-hello");
+      const earnedEl = document.getElementById("child-earned");
+      const pendingAmountEl = document.getElementById("child-pending-amount");
+      const openList = document.getElementById("child-open-list");
+      const pendingList = document.getElementById("child-pending-list");
+
+      if (!activeChildId) {
+        loginSection.style.display = "block";
+        mainSection.style.display = "none";
+        openList.innerHTML = "";
+        pendingList.innerHTML = "";
+        earnedEl.textContent = "$0.00";
+        pendingAmountEl.textContent = "$0.00";
+        return;
+      }
+
+      const child = getChildById(activeChildId);
+      if (!child) {
+        activeChildId = null;
+        renderChildView();
+        return;
+      }
+
+      loginSection.style.display = "none";
+      mainSection.style.display = "block";
+      hello.textContent = "Hi, " + child.name + "!";
+
+      const childTasks = tasks.filter(t => t.childId === activeChildId);
+      const earned = childTasks
+        .filter(t => t.status === "approved")
+        .reduce((sum, t) => sum + t.reward, 0);
+      const pendingAmount = childTasks
+        .filter(t => t.status === "pending")
+        .reduce((sum, t) => sum + t.reward, 0);
+
+      earnedEl.textContent = "$" + earned.toFixed(2);
+      pendingAmountEl.textContent = "+$" + pendingAmount.toFixed(2);
+
+      const openTasks = childTasks.filter(t => t.status === "open");
+      const pendingTasks = childTasks.filter(t => t.status === "pending");
+
+      openList.innerHTML = "";
+      pendingList.innerHTML = "";
+
+      if (openTasks.length === 0) {
+        openList.innerHTML = "<p class='small-text'>No tasks for today.</p>";
+      } else {
+        openTasks.slice().reverse().forEach(task => {
+          const div = document.createElement("div");
+          div.className = "child-task-card";
+
+          let imageHtml = "";
+          if (task.image && task.image.trim() !== "") {
+            const safeSrc = task.image.replace(/"/g, "&quot;");
+            imageHtml = `<img src="${safeSrc}" alt="Task image" class="child-task-image">`;
+          }
+
+          const descHtml = task.desc && task.desc.trim() !== ""
+            ? `<div class="child-task-desc">${task.desc}</div>`
+            : "";
+
+          div.innerHTML = `
+            ${imageHtml}
+            <div class="child-task-title">${task.title}</div>
+            <div class="child-task-earn">Earn: +$${task.reward.toFixed(2)}</div>
+            ${descHtml}
+          `;
+
+          const btnDone = document.createElement("button");
+          btnDone.textContent = "I am done!";
+          btnDone.className = "task-btn";
+          btnDone.onclick = () => {
+            task.status = "pending";
+            saveTasks();
+            renderAll();
+          };
+          div.appendChild(btnDone);
+
+          openList.appendChild(div);
+        });
+      }
+
+      if (pendingTasks.length === 0) {
+        pendingList.innerHTML = "<p class='small-text'>Nothing waiting for approval.</p>";
+      } else {
+        pendingTasks.slice().reverse().forEach(task => {
+          const div = document.createElement("div");
+          div.className = "child-task-card";
+
+          let imageHtml = "";
+          if (task.image && task.image.trim() !== "") {
+            const safeSrc = task.image.replace(/"/g, "&quot;");
+            imageHtml = `<img src="${safeSrc}" alt="Task image" class="child-task-image">`;
+          }
+
+          const descHtml = task.desc && task.desc.trim() !== ""
+            ? `<div class="child-task-desc">${task.desc}</div>`
+            : "";
+
+          div.innerHTML = `
+            ${imageHtml}
+            <div class="child-task-title">${task.title}</div>
+            <div class="child-task-earn">+ $${task.reward.toFixed(2)}</div>
+            ${descHtml}
+            <div class="task-status-pill status-pending">Waiting for parent approval</div>
+          `;
+
+          pendingList.appendChild(div);
+        });
+      }
+    }
+
+    function renderAll() {
+      renderChildren();
+      renderTasks(activeTab);
+      renderChildView();
+    }
+
+    // Edit mode for tasks
+    const addTaskTitleEl = document.getElementById("add-task-title");
+    const addTaskBtn = document.getElementById("add-task-btn");
+    const cancelEditBtn = document.getElementById("cancel-edit-btn");
+
+    function clearTaskForm() {
+      document.getElementById("task-child-select").value = "";
+      document.getElementById("task-title-input").value = "";
+      document.getElementById("task-desc-input").value = "";
+      document.getElementById("task-reward-input").value = "";
+      document.getElementById("task-image-url").value = "";
+      document.getElementById("task-image-file").value = "";
+    }
+
+    function enterEditMode(task) {
+      editTaskId = task.id;
+      addTaskTitleEl.textContent = "Edit task";
+      addTaskBtn.textContent = "Save changes";
+      cancelEditBtn.style.display = "block";
+
+      document.getElementById("task-child-select").value = String(task.childId);
+      document.getElementById("task-title-input").value = task.title;
+      document.getElementById("task-desc-input").value = task.desc || "";
+      document.getElementById("task-reward-input").value = task.reward.toString();
+      document.getElementById("task-image-url").value =
+        task.image && !task.image.startsWith("data:")
+          ? task.image
+          : "";
+      document.getElementById("task-image-file").value = "";
+    }
+
+    function exitEditMode() {
+      editTaskId = null;
+      addTaskTitleEl.textContent = "Add task";
+      addTaskBtn.textContent = "Add task";
+      cancelEditBtn.style.display = "none";
+      clearTaskForm();
+    }
+
+    cancelEditBtn.onclick = () => {
+      exitEditMode();
+    };
+
+    addTaskBtn.onclick = () => {
+      const childSelect = document.getElementById("task-child-select");
+      const titleInput = document.getElementById("task-title-input");
+      const descInput = document.getElementById("task-desc-input");
+      const rewardInput = document.getElementById("task-reward-input");
+      const imageUrlInput = document.getElementById("task-image-url");
+      const imageFileInput = document.getElementById("task-image-file");
+
+      const childId = Number(childSelect.value);
+      const title = titleInput.value.trim();
+      const desc = descInput.value.trim();
+      const reward = Number(rewardInput.value);
+      const imageUrl = imageUrlInput.value.trim();
+      const file = imageFileInput.files[0];
+
+      if (!childId || title === "" || isNaN(reward) || reward <= 0) {
+        alert("Choose child, title and reward.");
+        return;
+      }
+
+      // New task
+      if (!editTaskId) {
+        const createTask = imageData => {
+          tasks.push({
+            id: Date.now(),
+            childId: childId,
+            title: title,
+            desc: desc,
+            reward: reward,
+            status: "open",
+            image: imageData || ""
+          });
+          saveTasks();
+          clearTaskForm();
+          renderAll();
+        };
+
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            createTask(e.target.result);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          createTask(imageUrl);
+        }
+        return;
+      }
+
+      // Edit existing task (only open tasks får Edit-knapp)
+      const task = tasks.find(t => t.id === editTaskId);
+      if (!task) {
+        exitEditMode();
+        return;
+      }
+
+      task.childId = childId;
+      task.title = title;
+      task.desc = desc;
+      task.reward = reward;
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          task.image = e.target.result;
+          saveTasks();
+          exitEditMode();
+          renderAll();
+        };
+        reader.readAsDataURL(file);
+        return;
+      }
+
+      if (imageUrl !== "") {
+        task.image = imageUrl;
+      }
+      // Om inget bildfält fylls i behåller vi gamla bilden
+
+      saveTasks();
+      exitEditMode();
+      renderAll();
+    };
+
+    // Add child
+    document.getElementById("add-child-btn").onclick = () => {
+      const input = document.getElementById("child-name-input");
+      const name = input.value.trim();
+
+      if (name === "") {
+        alert("Please enter a name");
+        return;
+      }
+
+      children.push({
+        id: Date.now(),
+        name: name,
+        code: generateCode(),
+        balance: 0,
+        pending: 0
+      });
+
+      saveChildren();
+      input.value = "";
+      renderAll();
+    };
+
+    // Tabs
+    let activeTabCurrent = document.getElementById("tab-current");
+    let activeTabPending = document.getElementById("tab-pending");
+
+    activeTabCurrent.onclick = () => {
+      activeTab = "current";
+      activeTabCurrent.classList.add("active");
+      activeTabPending.classList.remove("active");
+      renderTasks(activeTab);
+    };
+
+    activeTabPending.onclick = () => {
+      activeTab = "pending";
+      activeTabPending.classList.add("active");
+      activeTabCurrent.classList.remove("active");
+      renderTasks(activeTab);
+    };
+
+    // Screens
+    document.getElementById("btn-parent").onclick = () => {
+      showParentPinScreen("login");
+    };
+
+    document.getElementById("btn-child").onclick = () => {
+      startScreen.style.display = "none";
+      parentPinScreen.style.display = "none";
+      parentScreen.style.display = "none";
+      childScreen.style.display = "block";
+      renderAll();
+    };
+
+    const parentPinInput = document.getElementById("parent-pin-input");
+    const parentPinError = document.getElementById("parent-pin-error");
+    const parentPinLabel = document.getElementById("parent-pin-label");
+    const parentPinSubmit = document.getElementById("parent-pin-submit");
+
+    function showParentPinScreen(mode) {
+      startScreen.style.display = "none";
+      childScreen.style.display = "none";
+      parentScreen.style.display = "none";
+      parentPinScreen.style.display = "block";
+
+      if (!parentPin) {
+        mode = "create";
+      }
+
+      if (mode === "create") {
+        creatingPin = true;
+        parentPinLabel.textContent = "Create your parent PIN. Choose 4 or 6 digits.";
+        parentPinSubmit.textContent = "Save PIN";
+      } else {
+        creatingPin = false;
+        parentPinLabel.textContent = "Enter your parent PIN to continue.";
+        parentPinSubmit.textContent = "Login";
+      }
+
+      parentPinError.style.display = "none";
+      parentPinInput.value = "";
+    }
+
+    document.getElementById("parent-pin-submit").onclick = () => {
+      const value = parentPinInput.value.trim();
+      if (creatingPin) {
+        if (!/^\d{4}$|^\d{6}$/.test(value)) {
+          parentPinError.textContent = "PIN must be 4 or 6 digits.";
+          parentPinError.style.display = "block";
+          return;
+        }
+        setParentPin(value);
+        parentPinError.style.display = "none";
+        parentPinInput.value = "";
+        parentPinScreen.style.display = "none";
+        parentScreen.style.display = "block";
+        renderAll();
+        return;
+      }
+
+      // Login mode
+      if (parentPin && value === parentPin) {
+        parentPinError.style.display = "none";
+        parentPinInput.value = "";
+        parentPinScreen.style.display = "none";
+        parentScreen.style.display = "block";
+        renderAll();
+      } else {
+        parentPinError.textContent = "Wrong PIN. Try again.";
+        parentPinError.style.display = "block";
+      }
+    };
+
+    parentPinInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById("parent-pin-submit").click();
+      }
+    });
+
+    document.getElementById("parent-pin-back").onclick = () => {
+      parentPinScreen.style.display = "none";
+      startScreen.style.display = "block";
+    };
+
+    document.getElementById("back-parent").onclick = () => {
+      parentScreen.style.display = "none";
+      startScreen.style.display = "block";
+    };
+
+    document.getElementById("change-pin-btn").onclick = () => {
+      showParentPinScreen("create");
+    };
+
+    // Child login
+    const childLoginError = document.getElementById("child-login-error");
+
+    document.getElementById("child-login-btn").onclick = () => {
+      const nameInput = document.getElementById("child-login-name");
+      const codeInput = document.getElementById("child-login-code");
+
+      const name = nameInput.value.trim().toLowerCase();
+      const code = codeInput.value.trim();
+
+      const found = children.find(c =>
+        c.name.trim().toLowerCase() === name && String(c.code) === code
+      );
+
+      if (!found) {
+        childLoginError.style.display = "block";
+        return;
+      }
+
+      childLoginError.style.display = "none";
+      activeChildId = found.id;
+      nameInput.value = "";
+      codeInput.value = "";
+      renderChildView();
+    };
+
+    document.getElementById("child-logout-btn").onclick = () => {
+      activeChildId = null;
+      renderChildView();
+    };
+
+    document.getElementById("back-child").onclick = () => {
+      childScreen.style.display = "none";
+      startScreen.style.display = "block";
+    };
+
+    // Initial render
+    renderAll();
+  </script>
+
+</body>
+</html>
