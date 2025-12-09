@@ -5,6 +5,12 @@
   <title>Haja</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- PWA-tillägg -->
+  <meta name="theme-color" content="#5c4bff">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
   <style>
     * { box-sizing: border-box; }
 
@@ -410,11 +416,11 @@
   <div class="phone">
 
     <h1>Haja</h1>
-    <div class="subtitle">Let’s Do It! Parent-Child Task Reward System </div>
+    <div class="subtitle">Let’s Do It! Child Task Reward System</div>
 
     <!-- START -->
     <div id="start-screen" class="card center">
-      <p style="margin-bottom:12px;">Who are you ?</p>
+      <p style="margin-bottom:12px;">Who are you today?</p>
       <button id="btn-parent" class="btn big">I am a Parent</button>
       <button id="btn-child" class="btn big alt">I am a Child</button>
     </div>
@@ -1152,6 +1158,13 @@
 
     // Initial render
     renderAll();
+  </script>
+
+  <!-- PWA: registrera service workern utan att röra din logik -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js").catch(console.error);
+    }
   </script>
 
 </body>
